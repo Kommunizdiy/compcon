@@ -265,6 +265,9 @@
               mdi-hexagon-outline
             </v-icon>
           </span>
+          <div class="caption mb-n0">
+            {{ w.Effect }}
+          </div>
         </v-row>
         <div v-for="p in w.Profiles" :key="`${w.ID}_${p.Name}`">
           <div class="caption">
