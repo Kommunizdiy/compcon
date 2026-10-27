@@ -5,6 +5,7 @@ import { BrewInfo } from '@/classes/components/brew/BrewController'
 import { applyLcpTracking, type ILcpTracked } from '@/classes/LcpItemMixin'
 import { localize } from '@/i18n/localize'
 import { bondPowerPrefix } from '@/i18n/contentKeys'
+import { publicUrl } from '@/util/publicUrl'
 
 type prompt = {
   question: string
@@ -115,7 +116,7 @@ class Bond implements ILcpTracked {
   }
 
   public get Image(): string {
-    return `/img/bond/${this.ItemData.name.replace(/The /g, '').toLowerCase()}.webp`
+    return publicUrl(`/img/bond/${this.ItemData.name.replace(/The /g, '').toLowerCase()}.webp`)
   }
 }
 

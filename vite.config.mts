@@ -6,8 +6,12 @@ import { fileURLToPath, URL } from 'url'
 import { VitePWA } from 'vite-plugin-pwa'
 import pkg from './package.json' with { type: 'json' }
 
+// sub-path the app is served from; '/' locally, '/compcon/' on GitHub Pages (set in deploy.yml)
+const base = process.env.VITE_BASE || '/'
+
 // https://vitejs.dev/config/
 export default defineConfig({
+  base,
   server: {
     watch: {
       usePolling: true,
@@ -27,23 +31,23 @@ export default defineConfig({
         theme_color: '#991E2A',
         background_color: '#991E2A',
         display: 'standalone',
-        scope: '/',
-        start_url: '/',
+        scope: base,
+        start_url: base,
         orientation: 'natural',
         categories: ['games', 'utilities'],
         icons: [
           {
-            src: '/icons/icon-192x192.png',
+            src: `${base}icons/icon-192x192.png`,
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/icons/icon-512x512.png',
+            src: `${base}icons/icon-512x512.png`,
             sizes: '512x512',
             type: 'image/png',
           },
           {
-            src: '/icons/icon-512x512-maskable.png',
+            src: `${base}icons/icon-512x512-maskable.png`,
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',
@@ -53,7 +57,7 @@ export default defineConfig({
       workbox: {
         maximumFileSizeToCacheInBytes: 8 * 1024 ** 2,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-        navigateFallback: '/index.html',
+        navigateFallback: `${base}index.html`,
         navigateFallbackDenylist: [/^\/api/],
         runtimeCaching: [
           {

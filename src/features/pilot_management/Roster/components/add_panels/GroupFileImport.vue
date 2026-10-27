@@ -46,7 +46,9 @@
               flat
               tile
             >
-              <v-img :src="p.img.portrait || p.img.cloud_portrait || '/img/pilot/nodata.png'" />
+              <v-img
+                :src="p.img.portrait || p.img.cloud_portrait || publicUrl('/img/pilot/nodata.png')"
+              />
             </v-avatar>
           </v-col>
           <v-col class="text-text">
@@ -130,6 +132,7 @@
 </template>
 
 <script setup lang="ts">
+  import { publicUrl } from '@/util/publicUrl'
   import { useI18n } from 'vue-i18n'
   const { t } = useI18n()
   import { ref } from 'vue'

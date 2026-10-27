@@ -3,6 +3,7 @@ import { ItemType } from './enums'
 import { applyLcpTracking, type ILcpTracked } from './LcpItemMixin'
 import DOMPurify from 'dompurify'
 import { localize } from '@/i18n/localize'
+import { publicUrl } from '@/util/publicUrl'
 
 interface IManufacturerData {
   id: string
@@ -77,8 +78,8 @@ class Manufacturer implements ILcpTracked {
 
   public get Logo(): string {
     if (this._logo_url) return this._logo_url
-    else if (this._logo) return `/img/logo/${this._logo}.svg`
-    return '/img/logo/generic.svg'
+    else if (this._logo) return publicUrl(`/img/logo/${this._logo}.svg`)
+    return publicUrl('/img/logo/generic.svg')
   }
 
   public get Icon(): string {

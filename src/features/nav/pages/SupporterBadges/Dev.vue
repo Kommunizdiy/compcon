@@ -8,7 +8,7 @@
           <v-col cols="auto">
             <v-avatar size="60px">
               <v-img v-if="info.image"
-                :src="info.image" />
+                :src="publicUrl(info.image)" />
               <span v-else
                 class="text-white heading"
                 :style="`font-size: ${mobile ? '12vw' : '3.5vw'}`">
@@ -67,6 +67,7 @@
 </template>
 
 <script setup lang="ts">
+import { publicUrl } from '@/util/publicUrl'
 import { useDisplay } from 'vuetify'
 
 defineProps<{ info: Record<string, any>; cols?: number }>()

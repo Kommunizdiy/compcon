@@ -13,7 +13,7 @@ const PilotLink = () => import('./features/pilot_management/link/index.vue')
 const Redirect = () => import('./features/main_menu/_components/oauth/Redirect.vue')
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',

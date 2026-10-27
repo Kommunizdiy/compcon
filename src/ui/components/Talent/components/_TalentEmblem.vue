@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+  import { publicUrl } from '@/util/publicUrl'
   import type { Talent } from '@/classes/pilot/components/talent/Talent'
   import { computed, ref } from 'vue'
   import DOMPurify from 'dompurify'
@@ -57,7 +58,7 @@
   })
 
   function imageLoadFailed() {
-    src.value = '/talent/GENERIC%20TALENT.svg'
+    src.value = publicUrl('/talent/GENERIC%20TALENT.svg')
     backup.value = props.talent.Name
   }
   function getImageLoc() {

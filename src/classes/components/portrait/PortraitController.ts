@@ -3,6 +3,7 @@ import { ImageTag } from '@/io/ImageManagement'
 import type { IPortraitContainer } from './IPortraitContainer'
 import { assertController } from '../../utility/assertController'
 import type { IControllerStatic } from '@/classes/ISerializable'
+import { publicUrl } from '@/util/publicUrl'
 
 interface IPortraitData {
   portrait: string
@@ -66,11 +67,11 @@ class PortraitController {
 
   public get Portrait(): string {
     if (this._cloud_portrait) return this._cloud_portrait
-    if (!this.Parent.ImageTag) return '/img/pilot/nodata.webp'
+    if (!this.Parent.ImageTag) return publicUrl('/img/pilot/nodata.webp')
     else if (this._portrait) return this._portrait
     else if (this.Parent.ImageTag === ImageTag.Mech) {
       return (this.Parent as Mech).Frame.DefaultImage
-    } else return '/img/pilot/nodata.webp'
+    } else return publicUrl('/img/pilot/nodata.webp')
   }
 
   public get CloudImage(): string {

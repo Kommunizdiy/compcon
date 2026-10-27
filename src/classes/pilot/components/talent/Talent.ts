@@ -6,6 +6,7 @@ import { ContentPack } from '../../../ContentPack'
 import { ItemType } from '../../../enums'
 import { keyPrefixes, slug } from '@/i18n/contentKeys'
 import DOMPurify from 'dompurify'
+import { publicUrl } from '@/util/publicUrl'
 
 interface ITalentRankData extends ICompendiumItemData {
   exclusive: boolean
@@ -57,7 +58,7 @@ class Talent extends CompendiumItem {
   public get Image(): string {
     if (this._icon_url) return this._icon_url
 
-    return `/talent/${this.Name.toUpperCase()}.svg`
+    return publicUrl(`/talent/${this.Name.toUpperCase()}.svg`)
   }
 
   public override get Icon(): string {

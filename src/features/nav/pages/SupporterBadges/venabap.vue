@@ -12,7 +12,7 @@
         <v-col cols="auto">
           <v-avatar size="100px">
             <v-img
-              src="/img/misc/supporters/vena_av.png"
+              :src="publicUrl('/img/misc/supporters/vena_av.png')"
               alt="venabap"
             />
           </v-avatar>
@@ -29,6 +29,10 @@
     </v-card-text>
   </v-card>
 </template>
+
+<script setup lang="ts">
+  import { publicUrl } from '@/util/publicUrl'
+</script>
 
 <style scoped>
   a,

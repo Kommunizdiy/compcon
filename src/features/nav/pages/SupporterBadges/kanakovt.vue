@@ -7,7 +7,7 @@
     <img
       class="banner"
       alt="Kana Banner"
-      src="/img/misc/supporters/kana_banner.png"
+      :src="publicUrl('/img/misc/supporters/kana_banner.png')"
     />
     <v-card-text
       class="pa-1"
@@ -17,7 +17,7 @@
         <v-col cols="auto">
           <v-avatar size="100px">
             <v-img
-              src="/img/misc/supporters/kana_av.png"
+              :src="publicUrl('/img/misc/supporters/kana_av.png')"
               alt="kanakovt"
             />
           </v-avatar>
@@ -67,6 +67,10 @@
     </v-card-text>
   </v-card>
 </template>
+
+<script setup lang="ts">
+  import { publicUrl } from '@/util/publicUrl'
+</script>
 
 <style scoped>
   a,
