@@ -11,6 +11,14 @@ class AchievementManager {
   private _eventMap: any[] = (eventMap as any).default
 
   public constructor() {
+    // achievement text is encrypted with a key that lives only in the official build's env;
+    // without it (forks, self-hosted builds) run with no achievements instead of crashing
+    if (!import.meta.env.VITE_ACHIEVEMENT_KEY) {
+      this._achievements = []
+      logger.info('Achievements disabled: VITE_ACHIEVEMENT_KEY is not set')
+      return
+    }
+
     this._achievements = (dict as any).default.map(x => {
       x.id = decrypt(x.id)
       x.name = decrypt(x.name)
