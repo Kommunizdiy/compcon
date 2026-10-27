@@ -841,7 +841,20 @@
       }
     },
     "print": {
-      "othersCount": "(+{n} others)"
+      "othersCount": "(+{n} others)",
+      "statGroups": {
+        "defense": "Defense",
+        "offense": "Attack",
+        "movement": "Movement",
+        "durability": "Durability",
+        "attributes": "Attributes",
+        "other": "Other",
+        "temporary": "Temporary"
+      },
+      "featureFontSize": "Features Font Size",
+      "hideFeature": "Hide when printing",
+      "hiddenFeatures": "Hidden",
+      "showAll": "Show all"
     },
     "overview": {
       "bannerImage": "Campaign Banner Image",

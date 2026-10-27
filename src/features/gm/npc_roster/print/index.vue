@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref } from 'vue'
+  import { computed, onMounted, ref, watch } from 'vue'
   import PrintPageShell from '@/ui/components/print/PrintPageShell.vue'
   import Layout from './layouts/index.vue'
   import TagInfoPrint from '@/ui/components/print/TagInfoPrint.vue'
@@ -69,6 +69,7 @@
   import { Npc } from '@/classes/npc/Npc'
   import { LAYOUT, ORIENTATION, PAPER, INCLUDE, has } from '@/ui/print/options'
   import type { GmPrintOptions } from '@/ui/print/types'
+  import { loadFeatureScale, saveFeatureScale } from './featureScale'
 
   defineOptions({ name: 'NpcRosterPrint' })
 
@@ -81,9 +82,15 @@
     layout: LAYOUT.standard,
     orientation: ORIENTATION.portrait,
     paper: PAPER.letter,
-    include: [INCLUDE.passiveFeatures],
+    include: [INCLUDE.passiveFeatures, INCLUDE.groupedStats, INCLUDE.hideStatFeatures],
     extras: [],
+    featureScale: loadFeatureScale(),
   })
+
+  watch(
+    () => options.value.featureScale,
+    v => v && saveFeatureScale(v)
+  )
 
   const allNpcs = computed(() => {
     return NpcStore().Npcs.filter(x => !x.SaveController.IsDeleted)

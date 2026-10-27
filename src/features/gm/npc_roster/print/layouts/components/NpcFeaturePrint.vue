@@ -28,68 +28,6 @@
       <span class="text-grey pl-1">{{ feature.FeatureType }}</span>
     </v-col>
     <v-col
-      v-if="isWeapon || feature.HasAccuracy || feature.HasAttackBonus"
-      class="px-1 text-center"
-    >
-      <template v-if="isWeapon">
-        <span
-          v-for="(r, ri) in asWeapon.Range(tier)"
-          :key="`range-${ri}`"
-          class="pl-1"
-        >
-          <v-icon
-            :icon="r.Icon"
-            class="mt-n1"
-          />
-          {{ r.Value }}
-        </span>
-        <cc-slashes
-          v-if="asWeapon.Damage(tier).length"
-          class="pl-2"
-        />
-        <span
-          v-for="(d, di) in asWeapon.Damage(tier)"
-          :key="`damage-${di}`"
-          class="pl-1"
-        >
-          <v-icon
-            :icon="d.Icon"
-            class="mt-n1"
-          />
-          {{ d.Value }}
-        </span>
-      </template>
-      <span
-        v-if="feature.HasAccuracy"
-        class="pl-1"
-      >
-        <cc-slashes
-          v-if="isWeapon"
-          class="pl-1"
-        />
-        <v-icon
-          :icon="feature.Accuracy(tier) < 0 ? 'cc:difficulty' : 'cc:accuracy'"
-          class="mt-n1"
-        />
-        {{ signed(feature.Accuracy(tier)) }}
-      </span>
-      <span
-        v-if="isWeapon || feature.HasAttackBonus"
-        class="pl-1"
-      >
-        <cc-slashes
-          v-if="isWeapon || feature.HasAccuracy"
-          class="pl-1 pr-2"
-        />
-        <v-icon
-          icon="cc:reticle"
-          class="mt-n1"
-          size="small"
-        />
-        {{ signed(feature.AttackBonus(tier)) }}
-      </span>
-    </v-col>
-    <v-col
       cols="auto"
       class="ml-auto"
     >
@@ -101,6 +39,80 @@
       />
     </v-col>
   </v-row>
+
+  <!-- one line per attack: range // damage // attack bonus + accuracy/difficulty icons -->
+  <div
+    v-if="isWeapon || feature.HasAttackBonus || accuracy"
+    class="attack-line"
+  >
+    <span
+      v-if="isWeapon && asWeapon.Range(tier).length"
+      class="attack-part"
+    >
+      <span
+        v-for="(r, ri) in asWeapon.Range(tier)"
+        :key="`range-${ri}`"
+        class="attack-item"
+      >
+        <v-icon
+          :icon="r.Icon"
+          class="mt-n1"
+        />
+        {{ r.Value }}
+      </span>
+    </span>
+    <cc-slashes
+      v-if="isWeapon && asWeapon.Range(tier).length && asWeapon.Damage(tier).length"
+      class="px-1"
+    />
+    <span
+      v-if="isWeapon && asWeapon.Damage(tier).length"
+      class="attack-part"
+    >
+      <span
+        v-for="(d, di) in asWeapon.Damage(tier)"
+        :key="`damage-${di}`"
+        class="attack-item"
+      >
+        <v-icon
+          :icon="d.Icon"
+          class="mt-n1"
+        />
+        {{ d.Value }}
+      </span>
+    </span>
+    <cc-slashes
+      v-if="isWeapon && (asWeapon.Range(tier).length || asWeapon.Damage(tier).length)"
+      class="px-1"
+    />
+    <span class="attack-item">
+      <template v-if="isWeapon || feature.HasAttackBonus">
+        <v-icon
+          icon="cc:reticle"
+          class="mt-n1"
+        />
+        {{ signed(feature.AttackBonus(tier)) }}
+      </template>
+      <template v-if="accuracy">
+        <template v-if="Math.abs(accuracy) <= MAX_ACC_ICONS">
+          <v-icon
+            v-for="n in Math.abs(accuracy)"
+            :key="`acc-${n}`"
+            :icon="accuracy < 0 ? 'cc:difficulty' : 'cc:accuracy'"
+            class="mt-n1"
+            :class="n === 1 ? 'ml-2' : ''"
+          />
+        </template>
+        <template v-else>
+          <v-icon
+            :icon="accuracy < 0 ? 'cc:difficulty' : 'cc:accuracy'"
+            class="mt-n1 ml-2"
+          />
+          &times;{{ Math.abs(accuracy) }}
+        </template>
+      </template>
+    </span>
+  </div>
 
   <div
     v-if="feature.IsDeprecated"
@@ -204,6 +216,7 @@
 </template>
 
 <script setup lang="ts">
+  import { NpcFeatureType } from '@/classes/npc/feature/NpcFeature'
   import type { NpcFeature } from '@/classes/npc/feature/NpcFeature'
   import { computed } from 'vue'
   import PrintDeployable from './PrintDeployable.vue'
@@ -227,10 +240,40 @@
     }
   )
 
-  const isWeapon = computed(() => props.feature instanceof NpcWeapon)
+  // compare by type tag rather than instanceof, which can miss weapons built from another module copy
+  const isWeapon = computed(() => props.feature.FeatureType === NpcFeatureType.Weapon)
   const asWeapon = computed(() => props.feature as NpcWeapon)
+
+  // past this many, accuracy/difficulty prints as one icon with a count
+  const MAX_ACC_ICONS = 5
+
+  const accuracy = computed(() =>
+    props.feature.HasAccuracy ? Number(props.feature.Accuracy(props.tier)) || 0 : 0
+  )
 
   function signed(n: number): string {
     return n > 0 ? `+${n}` : String(n)
   }
 </script>
+
+<style scoped>
+  .attack-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 2px;
+    row-gap: 2px;
+    padding-left: 28px;
+    font-weight: 600;
+  }
+
+  .attack-part {
+    display: inline-flex;
+    flex-wrap: wrap;
+    column-gap: 10px;
+  }
+
+  .attack-item {
+    white-space: nowrap;
+  }
+</style>

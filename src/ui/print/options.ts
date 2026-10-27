@@ -58,6 +58,8 @@ const INCLUDE = {
   tables: opt('tables', 'Tables'),
   gmNotes: opt('gmNotes', 'GM Notes'),
   passiveFeatures: opt('passiveFeatures', 'Passive Features'),
+  groupedStats: opt('groupedStats', 'Grouped Stat Block'),
+  hideStatFeatures: opt('hideStatFeatures', 'Hide Features Counted in Stats'),
   appendLined: opt('appendLined', 'Append Lined Section'),
   appendUnlined: opt('appendUnlined', 'Append Unlined Section'),
 } as const

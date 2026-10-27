@@ -8,6 +8,7 @@ type GmPrintOptions = {
   layout: PrintOption
   orientation: PrintOption
   paper: PrintOption
+  featureScale?: number
   include: PrintOption[]
   extras: PrintOption[]
 }
